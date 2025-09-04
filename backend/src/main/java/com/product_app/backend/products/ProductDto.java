@@ -1,9 +1,14 @@
 package com.product_app.backend.products;
 
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+
 public record ProductDto (
-        String id,
+        Long id,
+        String sku,
         String name,
         String description,
-        double price,
-        String imageUrl
+        BigDecimal price,
+        OffsetDateTime createdAt,
+        OffsetDateTime updatedAt
 ) {}
