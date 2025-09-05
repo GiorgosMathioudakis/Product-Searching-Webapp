@@ -16,7 +16,7 @@ async function fetchProducts({ limit, sort, dir, name, sku, cursor }) {
 
 export default function App() {
   const [limit] = useState(20);
-  const [sort, setSort] = useState('created_at');
+  const [sort, setSort] = useState('price');
   const [dir, setDir] = useState('desc');
   const [name, setName] = useState('');
   const [sku, setSku] = useState('');
@@ -59,9 +59,9 @@ export default function App() {
           onChange={(e) => setSku(e.target.value)}
         />
         <select value={sort} onChange={(e) => setSort(e.target.value)}>
-          <option value="created_at">Created At</option>
+          <option value="price">Price</option>
           <option value="updated_at">Updated At</option>
-          <option value="name">Name</option>
+          <option value="created_at">Created At</option>
         </select>
         <select value={dir} onChange={(e) => setDir(e.target.value)}>
           <option value="desc">Desc</option>

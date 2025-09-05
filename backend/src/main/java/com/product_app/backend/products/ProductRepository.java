@@ -66,10 +66,10 @@ public class ProductRepository{
         String orderBy;
         String keyset;
         switch (sortField) {
-            case NAME -> {
-                orderBy = " ORDER BY name " + orderDir + ", id " + orderDir + " ";
+            case PRICE -> {
+                orderBy = " ORDER BY price " + orderDir + ", id " + orderDir + " ";
                 if (afterString != null && afterId != null) {
-                    keyset = " AND (name " + cmp + " :afterString OR (name = :afterString AND id " + cmp + " :afterId)) ";
+                    keyset = " AND (price " + cmp + " :afterString OR (price = :afterString AND id " + cmp + " :afterId)) ";
                     params.addValue("afterString", afterString);
                     params.addValue("afterId", afterId);
                 } else keyset = "";
@@ -103,13 +103,13 @@ public class ProductRepository{
         return jdbc.query(sql, params, ROW_MAPPER);
     }
 
-    public enum SortField { NAME, CREATED_AT, UPDATED_AT }
+    public enum SortField { PRICE, CREATED_AT, UPDATED_AT }
     public enum SortDir { ASC, DESC }
 
     public static SortField parseSortField(String raw) {
         if (raw == null) return SortField.CREATED_AT;
         return switch (raw.toLowerCase()) {
-            case "name" -> SortField.NAME;
+            case "price" -> SortField.PRICE;
             case "updated_at" -> SortField.UPDATED_AT;
             case "created_at" -> SortField.CREATED_AT;
             default -> SortField.CREATED_AT;

@@ -57,7 +57,7 @@ public class ProductService {
             if (payload.sort().equalsIgnoreCase(toParam(sortField)) &&
                     payload.dir().equalsIgnoreCase(dir == SortDir.ASC ? "asc" : "desc")) {
                 switch (sortField) {
-                    case NAME -> {
+                    case PRICE -> {
                         afterString = payload.k1();
                         afterId = payload.k2() == null ? null : Long.valueOf(payload.k2());
                     }
@@ -78,11 +78,11 @@ public class ProductService {
             ProductDto last = rows.get(limit - 1);
             rows = rows.subList(0, limit);
             switch (sortField) {
-                case NAME -> {
+                case PRICE -> {
                     nextCursor = encode(new CursorPayload(
                             toParam(sortField),
                             dir == SortDir.ASC ? "asc" : "desc",
-                            last.name(),
+                            last.price().toString(),
                             String.valueOf(last.id())
                     ));
                 }
@@ -110,7 +110,7 @@ public class ProductService {
 
     private String toParam(SortField f) {
         return switch (f) {
-            case NAME -> "name";
+            case PRICE -> "price";
             case CREATED_AT -> "created_at";
             case UPDATED_AT -> "updated_at";
         };
