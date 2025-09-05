@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.OffsetDateTime;
@@ -41,7 +42,7 @@ public class ProductRepository{
             String nameQ,
             String skuQ,
             // keyset parameters (null for first page)
-            String afterString,  // for name
+            BigDecimal afterBigDecimal,  // for name
             OffsetDateTime afterTime, // for created/updated
             Long afterId
     ) {
@@ -68,9 +69,9 @@ public class ProductRepository{
         switch (sortField) {
             case PRICE -> {
                 orderBy = " ORDER BY price " + orderDir + ", id " + orderDir + " ";
-                if (afterString != null && afterId != null) {
-                    keyset = " AND (price " + cmp + " :afterString OR (price = :afterString AND id " + cmp + " :afterId)) ";
-                    params.addValue("afterString", afterString);
+                if (afterBigDecimal != null && afterId != null) {
+                    keyset = " AND (price " + cmp + " :afterBigDecimal OR (price = :afterBigDecimal AND id " + cmp + " :afterId)) ";
+                    params.addValue("afterBigDecimal", afterBigDecimal);
                     params.addValue("afterId", afterId);
                 } else keyset = "";
             }

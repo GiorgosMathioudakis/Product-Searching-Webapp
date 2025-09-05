@@ -2,6 +2,7 @@ package com.product_app.backend.products;
 
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -48,6 +49,7 @@ public class ProductService {
 
         // Decode cursor if provided
         String afterString = null;
+        BigDecimal afterBigDecimal = null;
         OffsetDateTime afterTime = null;
         Long afterId = null;
 
@@ -58,7 +60,7 @@ public class ProductService {
                     payload.dir().equalsIgnoreCase(dir == SortDir.ASC ? "asc" : "desc")) {
                 switch (sortField) {
                     case PRICE -> {
-                        afterString = payload.k1();
+                        afterBigDecimal = new BigDecimal(payload.k1());
                         afterId = payload.k2() == null ? null : Long.valueOf(payload.k2());
                     }
                     case CREATED_AT, UPDATED_AT -> {
@@ -71,7 +73,7 @@ public class ProductService {
             }
         }
 
-        List<ProductDto> rows = repo.list(limit, sortField, dir, nameQ, skuQ, afterString, afterTime, afterId);
+        List<ProductDto> rows = repo.list(limit, sortField, dir, nameQ, skuQ, afterBigDecimal, afterTime, afterId);
 
         String nextCursor = null;
         if (rows.size() > limit) {
