@@ -1,17 +1,11 @@
 package com.product_app.backend.Service;
 
-import com.product_app.backend.Dto.ProductMapper;
-import com.product_app.backend.Dto.ProductResponse;
+
 import com.product_app.backend.Model.Product;
 import com.product_app.backend.Repository.ProductRepository;
-import com.product_app.backend.Specification.ProductSpecifications;
-import com.product_app.backend.Utils.ProductUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.*;
 
 import java.util.List;
 
@@ -21,7 +15,24 @@ public class ProductService {
     @Autowired
     private ProductRepository repository;
 
-    public List<Product> fetchAllProducts(Pageable pageable) {
-        return repository.findAll(pageable).getContent();
+    public List<Product> fetchAllProducts(Pageable pageable, String name, String sku) {
+
+        String n = (name == null || name.isBlank()) ? null : name.trim();
+        String s = (sku  == null || sku.isBlank())  ? null : sku.trim();
+
+        if (n == null && s == null) {
+            return repository.findAll(pageable).getContent();
+        }
+
+
+        // At least one filter present: use OR across name/sku
+        return repository.findByNameContainingIgnoreCaseAndSkuContainingIgnoreCase(
+                n == null ? "" : n,
+                s == null ? "" : s,
+                pageable
+        ).getContent();
+
+
     }
+
 }
