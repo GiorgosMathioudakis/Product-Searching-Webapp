@@ -101,7 +101,11 @@ export default function App() {
               ))}
             </tbody>
           </table>
-
+          <div style={{ marginTop: 12 }}>
+            <button onClick={() => setCursor(data.nextCursor || '')} disabled={!hasNext}>
+               Previous   
+            </button>
+          </div>
           <div style={{ marginTop: 12 }}>
             <button onClick={() => setCursor(data.nextCursor || '')} disabled={!hasNext}>
               Next →

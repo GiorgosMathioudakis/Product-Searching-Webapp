@@ -1,4 +1,4 @@
-package com.product_app.backend.products;
+package com.product_app.backend.Dto;
 
 import java.util.List;
 
