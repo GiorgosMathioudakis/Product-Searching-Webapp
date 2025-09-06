@@ -9,7 +9,7 @@ async function fetchProducts({ limit, sort, dir, name, sku, cursor }) {
   if (sku) params.set('sku', sku);
   if (cursor) params.set('cursor', cursor);
 
-  const res = await fetch(`/api/products?${params.toString()}`);
+  const res = await fetch(`/api/products`);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.json(); // { items, nextCursor }
 }
@@ -101,7 +101,7 @@ export default function App() {
               ))}
             </tbody>
           </table>
-          <div style={{ marginTop: 12 }}>
+          {/* <div style={{ marginTop: 12 }}>
             <button onClick={() => setCursor(data.nextCursor || '')} disabled={!hasNext}>
                Previous   
             </button>
@@ -110,7 +110,7 @@ export default function App() {
             <button onClick={() => setCursor(data.nextCursor || '')} disabled={!hasNext}>
               Next →
             </button>
-          </div>
+          </div> */}
         </>
       ) : (
         <p>No products found.</p>

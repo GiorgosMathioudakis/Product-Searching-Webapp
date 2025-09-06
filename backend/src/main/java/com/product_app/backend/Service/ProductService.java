@@ -13,29 +13,15 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.*;
 
+import java.util.List;
+
 @Service
 public class ProductService {
 
     @Autowired
-    private final ProductRepository repo;
+    private ProductRepository repository;
 
-    public Page<ProductResponse> page(
-            String name,
-            String sku,
-            Pageable pageable
-    ) {
-        Pageable safe = ProductUtils.sanitize(pageable);
-
-        Specification<Product> spec =
-                ProductSpecifications.andAll(
-                        ProductSpecifications.nameContainsCI(name),
-                        ProductSpecifications.skuContainsCI(sku)
-                );
-
-        Page<Product> result = (spec == null)
-                ? repo.findAll(safe)
-                : repo.findAll(spec, safe);
-
-        return ProductMapper.toPageResponse(result);
+    public List<Product> fetchAllProducts(Pageable pageable) {
+        return repository.findAll(pageable).getContent();
     }
 }
