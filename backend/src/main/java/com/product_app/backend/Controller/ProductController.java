@@ -3,6 +3,7 @@ package com.product_app.backend.Controller;
 import com.product_app.backend.Model.Product;
 import com.product_app.backend.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,7 +23,7 @@ public class ProductController {
     }
 
     @GetMapping("products")
-    public List<Product> getProducts(
+    public Page<Product> getProducts(
             @RequestParam(value = "pageNo", defaultValue = "1", required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = "25", required = false) int pageSize,
             @RequestParam(value = "sortBy", defaultValue = "createdAt", required = false) String sortBy,
