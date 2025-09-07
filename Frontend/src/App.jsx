@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
-// --- Utilities --------------------------------------------------------------
+//Utilities
 function buildQuery(params) {
   const sp = new URLSearchParams();
   Object.entries(params).forEach(([k, v]) => {
@@ -27,7 +27,7 @@ function useDebounced(value, delayMs = 400) {
   return debounced;
 }
 
-// --- App (TailwindCSS) ------------------------------------------------------
+
 export default function App() {
   // server params (Spring controller expects 1-based pageNo)
   const [pageNo, setPageNo] = useState(1);
@@ -251,8 +251,6 @@ export default function App() {
           <option value="createdAt">Created At</option>
           <option value="updatedAt">Updated At</option>
           <option value="price">Price</option>
-          <option value="name">Name</option>
-          <option value="sku">SKU</option>
         </select>
         <select className="rounded-md border border-gray-300 px-3 py-2 text-sm" value={sortDir} onChange={(e) => setSortDir(e.target.value)}>
           <option value="desc">Desc</option>
