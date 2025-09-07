@@ -30,13 +30,13 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, unique = true, length = 255)
     private String sku;
 
-    @Column(nullable = false, unique = true, length = 255)
+    @Column(nullable = false, length = 255)
     private String name;
 
-    @Column(nullable = false, columnDefinition = "text" , length = 500)
+    @Column(nullable = false, columnDefinition = "text" , length = 255)
     private String description;
 
     @Column(nullable = false, precision = 12, scale = 2)
