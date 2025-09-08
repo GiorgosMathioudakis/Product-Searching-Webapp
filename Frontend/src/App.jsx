@@ -10,7 +10,6 @@ import ProductModal from "./components/ProductModal";
 
 export default function App() {
 
-  // server params (Spring controller expects 1-based pageNo)
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(25);
   const [sortBy, setSortBy] = useState("createdAt");
@@ -20,11 +19,10 @@ export default function App() {
   const [name, setName] = useState("");
   const [sku, setSku] = useState("");
 
-  // debounce text inputs
   const dName = useDebounced(name);
   const dSku = useDebounced(sku);
 
-  // fetch
+
   const { items, loading, error, currentPage, totalPages, totalElements, refetch } = useProducts({
     pageNo,
     pageSize,
@@ -45,7 +43,7 @@ export default function App() {
   const goNext = () => { if (canNext) setPageNo((p) => Math.min(totalPages || p + 1, p + 1)); };
   const goLast = () => { if (canNext) setPageNo(totalPages || 1); };
 
-  // jump
+
   const [jump, setJump] = useState("");
   const doJump = () => {
     const n = Number(jump);
@@ -55,7 +53,7 @@ export default function App() {
 
   // CRUD modal state
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalMode, setModalMode] = useState("create"); // 'create' | 'edit'
+  const [modalMode, setModalMode] = useState("create"); // 'create' OR 'edit'
   const [modalInitial, setModalInitial] = useState({ id: null, name: "", sku: "", description: "", price: "" });
 
   const openCreate = () => {

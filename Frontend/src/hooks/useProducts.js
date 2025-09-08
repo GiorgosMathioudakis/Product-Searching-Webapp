@@ -2,10 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { fetchProducts } from "../api/product";
 
 
-/**
-* Fetches Spring Page<Product> whenever params change.
-* Returns { page, items, loading, error, currentPage, totalPages, totalElements, refetch }
-*/
+
+// Retrieves a Page whenever user changes params , returns { page, items, loading, error, currentPage, totalPages, totalElements, refetch }
 export default function useProducts(params) {
     const { pageNo } = params;
     const [page, setPage] = useState(null);
