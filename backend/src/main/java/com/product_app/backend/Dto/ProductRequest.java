@@ -1,7 +1,5 @@
 package com.product_app.backend.Dto;
-
 import jakarta.validation.constraints.*;
-
 import java.math.BigDecimal;
 
 public record ProductRequest(

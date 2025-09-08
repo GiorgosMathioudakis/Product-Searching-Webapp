@@ -26,6 +26,7 @@ import java.time.OffsetDateTime;
         }
 )
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -59,4 +60,5 @@ public class Product {
     void preUpdate() {
         this.updatedAt = OffsetDateTime.now();
     }
+
 }
