@@ -9,8 +9,8 @@ export default function ProductsTable({ items, onEdit, onDelete }) {
             <table className="min-w-full border-collapse text-sm">
                 <thead>
                     <tr className="bg-gray-50 text-left">
-                        <th className="border-b border-gray-200 px-3 py-2">SKU</th>
                         <th className="border-b border-gray-200 px-3 py-2">Name</th>
+                        <th className="border-b border-gray-200 px-3 py-2">SKU</th>
                         <th className="border-b border-gray-200 px-3 py-2">Description</th>
                         <th className="border-b border-gray-200 px-3 py-2">Price</th>
                         <th className="border-b border-gray-200 px-3 py-2">Created</th>
@@ -21,8 +21,8 @@ export default function ProductsTable({ items, onEdit, onDelete }) {
                 <tbody>
                     {items.map((p) => (
                         <tr key={p.id} className="odd:bg-white even:bg-gray-50">
-                            <td className="border-b border-gray-100 px-3 py-2 align-top">{p.sku}</td>
                             <td className="border-b border-gray-100 px-3 py-2 align-top">{p.name}</td>
+                            <td className="border-b border-gray-100 px-3 py-2 align-top">{p.sku}</td>
                             <td className="border-b border-gray-100 px-3 py-2 align-top"><div className="max-w-[36rem] whitespace-pre-wrap">{p.description}</div></td>
                             <td className="border-b border-gray-100 px-3 py-2 align-top">{p.price}</td>
                             <td className="border-b border-gray-100 px-3 py-2 align-top">{p.createdAt ? new Date(p.createdAt).toLocaleString() : ""}</td>
