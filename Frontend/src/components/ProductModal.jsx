@@ -81,6 +81,9 @@ export default function ProductModal({ open, mode, initial, onClose, onSubmit })
         }
     };
 
+    const inputPrimary = "mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300";
+    const errPrimary = "mt-1 text-xs text-red-600";
+    const lblPrimary = "block text-sm font-medium";
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -89,37 +92,36 @@ export default function ProductModal({ open, mode, initial, onClose, onSubmit })
                 <h2 className="mb-2 text-lg font-semibold">{mode === "create" ? "Create Product" : "Edit Product"}</h2>
                 <form className="space-y-3" onSubmit={handleSave}>
                     <div>
-                        <label className="block text-sm font-medium">Name</label>
+                        <label className={lblPrimary}>Name</label>
                         <input
-                            className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+                            className={inputPrimary}
                             value={form.name}
                             onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
                         />
-                        {formErr.name && <p className="mt-1 text-xs text-red-600">{formErr.name}</p>}
+                        {formErr.name && <p className={errPrimary}>{formErr.name}</p>}
                     </div>
                     <div>
-                        <label className="block text-sm font-medium">SKU</label>
+                        <label className={lblPrimary}>SKU</label>
                         <input
-                            className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
-                            value={form.sku}
+                            className={inputPrimary}
                             onChange={(e) => setForm((f) => ({ ...f, sku: e.target.value }))}
                         />
-                        {formErr.sku && <p className="mt-1 text-xs text-red-600">{formErr.sku}</p>}
+                        {formErr.sku && <p className={errPrimary}>{formErr.sku}</p>}
                     </div>
                     <div>
-                        <label className="block text-sm font-medium">Description</label>
+                        <label className={lblPrimary}>Description</label>
                         <textarea
-                            className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+                            className={inputPrimary}
                             rows={4}
                             value={form.description}
                             onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
                         />
-                        {formErr.description && <p className="mt-1 text-xs text-red-600">{formErr.description}</p>}
+                        {formErr.description && <p className={errPrimary}>{formErr.description}</p>}
                     </div>
                     <div>
-                        <label className="block text-sm font-medium">Price</label>
+                        <label className={lblPrimary}>Price</label>
                         <input
-                            className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+                            className={inputPrimary}
                             type="number"
                             step="0.01"
                             min={0}
@@ -127,7 +129,7 @@ export default function ProductModal({ open, mode, initial, onClose, onSubmit })
                             value={form.price}
                             onChange={(e) => setForm((f) => ({ ...f, price: e.target.value }))}
                         />
-                        {formErr.price && <p className="mt-1 text-xs text-red-600">{formErr.price}</p>}
+                        {formErr.price && <p className={errPrimary}>{formErr.price}</p>}
                     </div>
                     <div className="mt-4 flex justify-end gap-2">
                         <button type="button" className={btn} onClick={onClose}>Cancel</button>
