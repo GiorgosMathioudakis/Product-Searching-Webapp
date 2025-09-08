@@ -104,6 +104,7 @@ export default function ProductModal({ open, mode, initial, onClose, onSubmit })
                         <label className={lblPrimary}>SKU</label>
                         <input
                             className={inputPrimary}
+                            value={form.sku}
                             onChange={(e) => setForm((f) => ({ ...f, sku: e.target.value }))}
                         />
                         {formErr.sku && <p className={errPrimary}>{formErr.sku}</p>}
