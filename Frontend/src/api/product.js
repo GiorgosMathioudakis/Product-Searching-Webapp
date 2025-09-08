@@ -1,11 +1,17 @@
 import { buildQuery } from "../utils/query";
 
-
-export async function fetchProducts({ pageNo, pageSize, sortBy, sortDir, name, sku }) {
+export async function fetchProductsPage({ pageNo, pageSize, sortBy, sortDir, name, sku }) {
     const qs = buildQuery({ pageNo, pageSize, sortBy, sortDir, name, sku });
     const res = await fetch(`/api/products?${qs}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return res.json();
+    return res.json(); // Spring Page<Product>
+}
+
+export async function fetchProductsSlice({ pageNo, pageSize, sortBy, sortDir, name, sku }) {
+    const qs = buildQuery({ pageNo, pageSize, sortBy, sortDir, name, sku });
+    const res = await fetch(`/api/products/slice?${qs}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json(); // { content, pageNo, pageSize, hasNext?, hasPrev? }
 }
 
 

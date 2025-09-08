@@ -1,40 +1,73 @@
 import { useEffect, useMemo, useState } from "react";
-import { fetchProducts } from "../api/product";
+import { fetchProductsPage, fetchProductsSlice } from "../api/product";
 
+// mode: 'page' | 'slice'
+export default function useProducts(params, mode = "page") {
+    const { pageNo, pageSize, sortBy, sortDir, name, sku } = params;
 
-
-// Retrieves a Page whenever user changes params , returns { page, items, loading, error, currentPage, totalPages, totalElements, refetch }
-export default function useProducts(params) {
-    const { pageNo } = params;
-    const [page, setPage] = useState(null);
+    const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
-
 
     useEffect(() => {
         let cancelled = false;
         setLoading(true);
         setError("");
-        fetchProducts(params)
-            .then((p) => { if (!cancelled) setPage(p); })
+
+        const fetcher = mode === "slice" ? fetchProductsSlice : fetchProductsPage;
+
+        fetcher({ pageNo, pageSize, sortBy, sortDir, name, sku })
+            .then((resp) => { if (!cancelled) setData(resp); })
             .catch((e) => { if (!cancelled) setError(String(e)); })
             .finally(() => { if (!cancelled) setLoading(false); });
+
         return () => { cancelled = true; };
-    }, [params.pageNo, params.pageSize, params.sortBy, params.sortDir, params.name, params.sku]);
+    }, [pageNo, pageSize, sortBy, sortDir, name, sku, mode]);
 
+    const items = data?.content ?? [];
 
-    const totalPages = page?.totalPages ?? 0;
-    const totalElements = page?.totalElements ?? 0;
-    const currentPage = useMemo(() => (
-        typeof page?.number === "number" ? page.number + 1 : pageNo
-    ), [page, pageNo]);
+    let currentPage, totalPages, totalElements, hasPrev, hasNext;
 
+    if (mode === "slice") {
+        // Slice payload may or may not include hasNext — be robust:
+        const serverHasNext = typeof data?.hasNext === "boolean" ? data.hasNext : null;
 
-    const items = page?.content ?? [];
+        currentPage = data?.pageNo ?? pageNo;
+        totalPages = null;     // not available
+        totalElements = null;     // not available
+        hasPrev = (currentPage || 1) > 1;
+        // Fallback heuristic: if we got a full page, assume there *might* be a next page
+        hasNext = serverHasNext ?? (items.length === pageSize);
+    } else {
+        totalPages = data?.totalPages ?? 0;
+        totalElements = data?.totalElements ?? 0;
+        currentPage = useMemo(
+            () => (typeof data?.number === "number" ? data.number + 1 : pageNo),
+            [data, pageNo]
+        );
+        hasPrev = (currentPage || 1) > 1;
+        hasNext = (currentPage || 1) < (totalPages || 1);
+    }
 
+    const refetch = async () => {
+        const fetcher = mode === "slice" ? fetchProductsSlice : fetchProductsPage;
+        try {
+            const resp = await fetcher({ pageNo, pageSize, sortBy, sortDir, name, sku });
+            setData(resp);
+        } catch (e) {
+            setError(String(e));
+        }
+    };
 
-    const refetch = () => fetchProducts(params).then(setPage).catch((e) => setError(String(e)));
-
-
-    return { page, items, loading, error, currentPage, totalPages, totalElements, refetch };
+    return {
+        items,
+        loading,
+        error,
+        currentPage,
+        totalPages,
+        totalElements,
+        hasPrev,
+        hasNext,
+        refetch,
+    };
 }

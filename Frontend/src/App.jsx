@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import useDebounced from "./hooks/useDebounced";
 import useProducts from "./hooks/useProducts";
 import { apiCreate, apiDelete, apiUpdate } from "./api/product";
@@ -7,53 +7,45 @@ import Pagination from "./components/Pagination";
 import ProductsTable from "./components/ProductsTable";
 import ProductModal from "./components/ProductModal";
 
-
 export default function App() {
+
+  const USE_SLICE = true;
 
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(25);
   const [sortBy, setSortBy] = useState("createdAt");
   const [sortDir, setSortDir] = useState("desc");
 
-  // filters
   const [name, setName] = useState("");
   const [sku, setSku] = useState("");
-
   const dName = useDebounced(name);
   const dSku = useDebounced(sku);
 
+  const {
+    items,
+    loading,
+    error,
+    currentPage,
+    totalPages,
+    totalElements,
+    hasPrev,
+    hasNext,
+    refetch,
+  } = useProducts(
+    { pageNo, pageSize, sortBy, sortDir, name: dName, sku: dSku },
+    USE_SLICE ? "slice" : "page"
+  );
 
-  const { items, loading, error, currentPage, totalPages, totalElements, refetch } = useProducts({
-    pageNo,
-    pageSize,
-    sortBy,
-    sortDir,
-    name: dName,
-    sku: dSku,
-  });
+  useEffect(() => {
+    setPageNo(1);
+  }, [pageSize, sortBy, sortDir, dName, dSku]);
 
-  // when filters/sort change, reset to first page
-  useEffect(() => { setPageNo(1); }, [pageSize, sortBy, sortDir, dName, dSku]);
-
-  // pagination helpers
-  const canPrev = currentPage > 1;
-  const canNext = currentPage < totalPages;
-  const goFirst = () => { if (canPrev) setPageNo(1); };
-  const goPrev = () => { if (canPrev) setPageNo((p) => Math.max(1, p - 1)); };
-  const goNext = () => { if (canNext) setPageNo((p) => Math.min(totalPages || p + 1, p + 1)); };
-  const goLast = () => { if (canNext) setPageNo(totalPages || 1); };
-
-
-  const [jump, setJump] = useState("");
-  const doJump = () => {
-    const n = Number(jump);
-    if (!Number.isFinite(n)) return;
-    if (n >= 1 && n <= (totalPages || 1)) setPageNo(n);
-  };
+  const goPrev = () => { if (hasPrev) setPageNo((p) => Math.max(1, p - 1)); };
+  const goNext = () => { if (hasNext) setPageNo((p) => p + 1); };
 
   // CRUD modal state
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalMode, setModalMode] = useState("create"); // 'create' OR 'edit'
+  const [modalMode, setModalMode] = useState("create");
   const [modalInitial, setModalInitial] = useState({ id: null, name: "", sku: "", description: "", price: "" });
 
   const openCreate = () => {
@@ -77,20 +69,20 @@ export default function App() {
   const handleDelete = async (p) => {
     if (!window.confirm(`Delete product "${p.name}" (SKU ${p.sku})?`)) return;
     await apiDelete(p.id);
-    const willBeEmpty = items.length === 1 && currentPage === totalPages && currentPage > 1;
-    if (willBeEmpty) setPageNo(currentPage - 1);
-    else await refetch();
+    await refetch();
   };
 
-  const btnPrimary = "px-3 py-2 rounded-lg border text-sm transition disabled:opacity-50 disabled:cursor-not-allowed border-emerald-600 bg-emerald-500 text-white hover:bg-emerald-600";
+  const btnPrimary =
+    "px-3 py-2 rounded-lg border text-sm transition disabled:opacity-50 disabled:cursor-not-allowed border-emerald-600 bg-emerald-500 text-white hover:bg-emerald-600";
 
   return (
     <div className="p-6 font-sans">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold tracking-tight">Products</h1>
-        <button className={btnPrimary} onClick={openCreate}>+ New Product</button>
+        <button className={btnPrimary} onClick={openCreate}>
+          + New Product
+        </button>
       </div>
-
 
       <Filters
         name={name}
@@ -107,34 +99,22 @@ export default function App() {
         }}
       />
 
-
       {loading && <p className="mt-4 text-sm text-gray-600">Loading…</p>}
       {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
-
 
       {!loading && !error && (
         <>
           <ProductsTable items={items} onEdit={openEdit} onDelete={handleDelete} />
 
-
           <Pagination
             currentPage={currentPage}
-            totalPages={totalPages}
-            itemsShown={items.length}
-            totalElements={totalElements}
-            canPrev={canPrev}
-            canNext={canNext}
-            onFirst={goFirst}
-            onPrev={goPrev}
-            onNext={goNext}
-            onLast={goLast}
-            jump={jump}
-            setJump={setJump}
-            onJump={doJump}
+            canPrev={hasPrev}
+            canNext={hasNext}
+            onPrev={() => hasPrev && setPageNo((p) => Math.max(1, p - 1))}
+            onNext={() => hasNext && setPageNo((p) => p + 1)}
           />
         </>
       )}
-
 
       <ProductModal
         open={modalOpen}
