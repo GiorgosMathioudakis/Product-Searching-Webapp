@@ -64,8 +64,6 @@ export default function useProducts(params, mode = "page") {
         loading,
         error,
         currentPage,
-        totalPages,
-        totalElements,
         hasPrev,
         hasNext,
         refetch,

@@ -1,8 +1,8 @@
-// Minimal pagination: Prev / Page N / Next
 export default function Pagination({
     currentPage,
     canPrev,
     canNext,
+    onFirst = () => { },
     onPrev = () => { },
     onNext = () => { },
 }) {
@@ -12,6 +12,10 @@ export default function Pagination({
 
     return (
         <div className="mt-3 flex flex-wrap items-center justify-center gap-3">
+            <button className={btn} disabled={!canPrev} onClick={onFirst}>
+                « First
+            </button>
+
             <button className={btn} disabled={!canPrev} onClick={onPrev}>
                 ‹ Previous
             </button>

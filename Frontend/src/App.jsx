@@ -26,8 +26,6 @@ export default function App() {
     loading,
     error,
     currentPage,
-    totalPages,
-    totalElements,
     hasPrev,
     hasNext,
     refetch,
@@ -40,8 +38,9 @@ export default function App() {
     setPageNo(1);
   }, [pageSize, sortBy, sortDir, dName, dSku]);
 
-  const goPrev = () => { if (hasPrev) setPageNo((p) => Math.max(1, p - 1)); };
-  const goNext = () => { if (hasNext) setPageNo((p) => p + 1); };
+
+  const goFirst = () => { if (hasPrev) setPageNo(1); };
+
 
   // CRUD modal state
   const [modalOpen, setModalOpen] = useState(false);
@@ -110,6 +109,7 @@ export default function App() {
             currentPage={currentPage}
             canPrev={hasPrev}
             canNext={hasNext}
+            onFirst={goFirst}
             onPrev={() => hasPrev && setPageNo((p) => Math.max(1, p - 1))}
             onNext={() => hasNext && setPageNo((p) => p + 1)}
           />

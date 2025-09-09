@@ -10,14 +10,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
 
-//    Page<Product> findByNameContainingIgnoreCaseAndSkuContainingIgnoreCase(
-//            String name, String sku, Pageable pageable
-//    );
-
     Slice<Product> findByNameContainingIgnoreCaseAndSkuContainingIgnoreCase(
             String name, String sku, Pageable pageable
     );
-
 
 }
 

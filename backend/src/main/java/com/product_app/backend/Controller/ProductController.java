@@ -86,28 +86,4 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
-//    @GetMapping("products")
-//    public Page<Product> getProducts(
-//            @RequestParam(value = "pageNo", defaultValue = "1", required = false) int pageNo,
-//            @RequestParam(value = "pageSize", defaultValue = "25", required = false) int pageSize,
-//            @RequestParam(value = "sortBy", defaultValue = "createdAt", required = false) String sortBy,
-//            @RequestParam(value = "sortDir", defaultValue = "desc", required = false) String sortDir,
-//            @RequestParam(value = "name", required = false) String name,
-//            @RequestParam(value = "sku", required = false) String sku
-//    ) {
-//
-//        Sort sortedList = null;
-//
-//        if( sortDir.equals("asc") ) {
-//            sortedList = Sort.by(sortBy).ascending();
-//        }else{
-//            sortedList = Sort.by(sortBy).descending();
-//        }
-//
-//        Pageable pageable = PageRequest.of(pageNo-1, pageSize, sortedList);
-//
-//        return productService.fetchProductsSlice(pageable, name, sku);
-//    }
-
-
 }
