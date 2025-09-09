@@ -38,7 +38,6 @@ export default function App() {
     setPageNo(1);
   }, [pageSize, sortBy, sortDir, dName, dSku]);
 
-
   const goFirst = () => { if (hasPrev) setPageNo(1); };
 
 
