@@ -7,7 +7,6 @@ import com.product_app.backend.Repository.ProductRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,7 @@ public class ProductService {
         String s = (sku  == null || sku.isBlank())  ? null : sku.trim();
 
         if (n == null && s == null) {
-            return repository.findAll(pageable);
+            return repository.findAllBy(pageable);
         }
 
         return repository.findByNameContainingIgnoreCaseAndSkuContainingIgnoreCase(

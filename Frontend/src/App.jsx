@@ -41,7 +41,6 @@ export default function App() {
   const goFirst = () => { if (hasPrev) setPageNo(1); };
 
 
-  // CRUD modal state
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState("create");
   const [modalInitial, setModalInitial] = useState({ id: null, name: "", sku: "", description: "", price: "" });

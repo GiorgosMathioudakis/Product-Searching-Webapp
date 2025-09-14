@@ -11,7 +11,7 @@ export async function fetchProductsSlice({ pageNo, pageSize, sortBy, sortDir, na
     const qs = buildQuery({ pageNo, pageSize, sortBy, sortDir, name, sku });
     const res = await fetch(`/api/products/slice?${qs}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return res.json(); // { content, pageNo, pageSize, hasNext?, hasPrev? }
+    return res.json(); // { content, pageNo, pageSize, hasNext?, hasPrev? } no totals , no COUNT(*)
 }
 
 

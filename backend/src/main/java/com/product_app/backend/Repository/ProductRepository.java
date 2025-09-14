@@ -1,7 +1,6 @@
 package com.product_app.backend.Repository;
 
 import com.product_app.backend.Model.Product;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,5 +13,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
             String name, String sku, Pageable pageable
     );
 
-}
+    Slice<Product> findAllBy(Pageable pageable);
 
+}

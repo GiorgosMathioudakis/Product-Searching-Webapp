@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { fetchProductsPage, fetchProductsSlice } from "../api/product";
 
 // mode: 'page' | 'slice'
-export default function useProducts(params, mode = "page") {
+export default function useProducts(params, mode = "slice") {
     const { pageNo, pageSize, sortBy, sortDir, name, sku } = params;
 
     const [data, setData] = useState(null);

@@ -36,10 +36,8 @@ export default function ProductModal({ open, mode, initial, onClose, onSubmit })
     const [formErr, setFormErr] = useState({});
 
 
-    // whenever initial changes (edit different row), sync state
+    // whenever initial changes (edit different row), sync state in case it is missmatched
     if (open && initial && form.id !== initial.id) {
-        // naive sync without useEffect to avoid extra imports
-        // eslint-disable-next-line react/no-direct-mutation-state
         setForm(initial);
         setFormErr({});
     }
